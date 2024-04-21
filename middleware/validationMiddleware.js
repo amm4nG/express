@@ -1,5 +1,5 @@
 const { body, validationResult } = require('express-validator');
-const db = require('../models'); // Pastikan Anda mengimpor model database Anda
+const db = require('../models');
 
 // Fungsi asinkron untuk memeriksa apakah username sudah ada di dalam database
 const isUsernameUnique = async (username) => {
@@ -7,6 +7,7 @@ const isUsernameUnique = async (username) => {
   return !user; // Mengembalikan true jika username belum ada di dalam database
 };
 
+// Fungsi asinkron untuk memeriksa apakah email sudah ada di dalam database
 const isEmailUnique = async (email) => {
   const user = await db.User.findOne({ where: { email: email } });
   return !user; // Mengembalikan true jika email belum ada di dalam database
