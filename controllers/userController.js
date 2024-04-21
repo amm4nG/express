@@ -1,5 +1,5 @@
 const db = require('../models');
-const {validateDataUser, validationResult} = require('../middleware/validationMiddleware');
+const { validateDataUser, validationResult } = require('../middleware/validationMiddleware');
 const { use } = require('../routes/userRoute');
 
 exports.getAllUser = async (req, res) => {
@@ -21,8 +21,10 @@ exports.getUserById = async (req, res) => {
     }
 }
 
+// add new user
 exports.addUser = [
-    validateDataUser,
+    // validasi data user
+    validateDataUser, 
     async (req, res) => {
         try {
             const errors = validationResult(req)
