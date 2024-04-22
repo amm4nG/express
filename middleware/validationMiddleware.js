@@ -32,4 +32,13 @@ exports.validateDataUser = [
     })
 ];
 
+exports.validateUpdateDataUser = [
+  body('username')
+  .notEmpty().withMessage('Username tidak boleh kosong'),
+
+  body('email')
+  .notEmpty().withMessage('Email tidak boleh kosong'),
+
+]
+
 exports.validationResult = validationResult;
