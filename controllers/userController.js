@@ -1,6 +1,7 @@
 const db = require('../models');
 const { validateUpdateDataUser, validateDataUser, validationResult } = require('../middleware/validationMiddleware');
 const { use } = require('../routes/userRoute');
+const multer = require('multer');
 
 exports.getAllUser = async (req, res) => {
     try {
@@ -23,7 +24,7 @@ exports.getUserById = async (req, res) => {
 
 // add new user
 exports.addUser = [
-    // validasi data user
+    multer().none(),
     validateDataUser, 
     async (req, res) => {
         try {
@@ -66,9 +67,9 @@ exports.deleteUser = async (req, res) => {
 }
 
 exports.updateUser = [
+    multer().none(),
     validateUpdateDataUser,
     async (req, res) => {
-
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             const firstErrorMessage = errors.array()[0].msg
@@ -109,3 +110,29 @@ exports.updateUser = [
         }
     }
 ]
+
+// Konfigurasi penyimpanan file dengan multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/') // direktori penyimpanan file
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname) // nama file yang disimpan
+  }
+});
+
+const upload = multer({ storage: storage });
+exports.uploadImage = (req, res) => {
+    // Gunakan upload.single('image') untuk menangani upload file tunggal dengan nama 'image'
+  upload.single('image')(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      // Aksi jika terjadi kesalahan Multer
+      return res.status(500).json({ message: 'Terjadi kesalahan saat mengupload gambar' });
+    } else if (err) {
+      // Aksi jika terjadi kesalahan lain
+      return res.status(500).json({ message: 'Terjadi kesalahan saat mengupload gambar' });
+    }
+    // Jika berhasil, berikan respons berhasil
+    return res.status(200).json({ message: 'Gambar berhasil diupload' });
+  });
+}

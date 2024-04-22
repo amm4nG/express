@@ -37,7 +37,8 @@ exports.validateUpdateDataUser = [
   .notEmpty().withMessage('Username tidak boleh kosong'),
 
   body('email')
-  .notEmpty().withMessage('Email tidak boleh kosong'),
+  .notEmpty().withMessage('Email tidak boleh kosong')
+  .isEmail().withMessage('Email tidak valid')
 
 ]
 
